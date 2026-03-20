@@ -46,20 +46,22 @@
         .cards-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
         
         /* 卡片样式 */
         .gift-card {
             position: relative;
             width: 100%;
-            aspect-ratio: 3/4;
+            aspect-ratio: 1/1;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: transform 0.3s ease;
+            background-color: #fff;
+            border: 2px solid #ffb6c1;
         }
         
         .gift-card:hover {
@@ -70,6 +72,30 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        /* 卡片内容 */
+        .card-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
         }
         
         /* 刮刮乐效果 */
@@ -137,13 +163,7 @@
             }
         }
         
-        /* 卡片放大动画 */
-        .gift-card.enlarged {
-            transform: scale(1.1);
-            z-index: 100;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-        }
+
         
         .scratch-area {
             position: absolute;
@@ -336,42 +356,60 @@
         <div class="cards-container">
             <!-- 生日蛋糕卡片 - 网格图案 -->
             <div class="gift-card" data-id="cake">
-                <img src="https://picsum.photos/seed/cake/400/600" alt="生日蛋糕" class="card-image">
+                <div class="card-content">
+                    <div class="card-icon">🎂</div>
+                    <div class="card-title">生日蛋糕</div>
+                </div>
                 <div class="scratch-overlay grid"></div>
                 <div class="scratch-area"></div>
             </div>
             
             <!-- lululemon瑜伽裤卡片 - 粉色波点 -->
             <div class="gift-card" data-id="yoga">
-                <img src="https://picsum.photos/seed/yoga/400/600" alt="lululemon瑜伽裤" class="card-image">
+                <div class="card-content">
+                    <div class="card-icon">🧘‍♀️</div>
+                    <div class="card-title">瑜伽裤</div>
+                </div>
                 <div class="scratch-overlay polka"></div>
                 <div class="scratch-area"></div>
             </div>
             
             <!-- 防晒口罩卡片 - 彩虹渐变 -->
             <div class="gift-card" data-id="mask">
-                <img src="https://picsum.photos/seed/mask/400/600" alt="防晒口罩" class="card-image">
+                <div class="card-content">
+                    <div class="card-icon">😷</div>
+                    <div class="card-title">防晒口罩</div>
+                </div>
                 <div class="scratch-overlay rainbow"></div>
                 <div class="scratch-area"></div>
             </div>
             
             <!-- 高跟鞋卡片 - 网格图案 -->
             <div class="gift-card" data-id="heels">
-                <img src="https://picsum.photos/seed/heels/400/600" alt="高跟鞋" class="card-image">
+                <div class="card-content">
+                    <div class="card-icon">👠</div>
+                    <div class="card-title">高跟鞋</div>
+                </div>
                 <div class="scratch-overlay grid"></div>
                 <div class="scratch-area"></div>
             </div>
             
             <!-- 视频卡片 - 粉色波点 -->
             <div class="gift-card" data-id="video">
-                <img src="https://picsum.photos/seed/video/400/600" alt="视频" class="card-image">
+                <div class="card-content">
+                    <div class="card-icon">🎥</div>
+                    <div class="card-title">专属视频</div>
+                </div>
                 <div class="scratch-overlay polka"></div>
                 <div class="scratch-area"></div>
             </div>
             
             <!-- 爱情quiz卡片 - 彩虹渐变 -->
             <div class="gift-card" data-id="quiz">
-                <img src="https://picsum.photos/seed/quiz/400/600" alt="爱情quiz" class="card-image">
+                <div class="card-content">
+                    <div class="card-icon">💖</div>
+                    <div class="card-title">爱情Quiz</div>
+                </div>
                 <div class="scratch-overlay rainbow"></div>
                 <div class="scratch-area"></div>
             </div>
@@ -460,14 +498,14 @@
                 scratch(e.touches[0]);
             });
             
-            document.addEventListener('touchmove', function(e) {
+            area.addEventListener('touchmove', function(e) {
                 if (isScratching) {
                     e.preventDefault();
                     scratch(e.touches[0]);
                 }
-            });
+            }, { passive: false });
             
-            document.addEventListener('touchend', function() {
+            area.addEventListener('touchend', function() {
                 isScratching = false;
             });
             
@@ -507,9 +545,7 @@
                     overlay.style.opacity = '0';
                     setTimeout(() => {
                         overlay.style.display = 'none';
-                        // 添加卡片放大效果
-                        card.classList.add('enlarged');
-                    }, 500);
+                    }, 300); // 缩短时间，让覆盖层更快消失
                 }
             }
         });
