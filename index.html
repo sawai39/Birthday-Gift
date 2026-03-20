@@ -79,10 +79,70 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmNWY1ZjUiPjwvcmVjdD4KPC9zdmc+');
-            background-size: 10px 10px;
             z-index: 10;
             opacity: 0.9;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* 网格图案覆盖层 */
+        .scratch-overlay.grid {
+            background: linear-gradient(45deg, #ffb6c1 25%, #ffc0cb 25%, #ffc0cb 50%, #ffb6c1 50%, #ffb6c1 75%, #ffc0cb 75%, #ffc0cb 100%);
+            background-size: 28.28px 28.28px;
+            animation: scratchPattern 3s linear infinite;
+        }
+        
+        /* 粉色波点覆盖层 */
+        .scratch-overlay.polka {
+            background-image: radial-gradient(#ff69b4 2px, transparent 2px);
+            background-size: 20px 20px;
+            background-color: #ffb6c1;
+            animation: polkaPattern 4s linear infinite;
+        }
+        
+        /* 彩虹渐变覆盖层 */
+        .scratch-overlay.rainbow {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #ff9ff3, #feca57, #ff6b6b);
+            background-size: 400% 400%;
+            animation: rainbowGradient 8s ease infinite;
+        }
+        
+        /* 动画效果 */
+        @keyframes scratchPattern {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 28.28px 28.28px;
+            }
+        }
+        
+        @keyframes polkaPattern {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 20px 20px;
+            }
+        }
+        
+        @keyframes rainbowGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 卡片放大动画 */
+        .gift-card.enlarged {
+            transform: scale(1.1);
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
         }
         
         .scratch-area {
@@ -274,45 +334,45 @@
         <p class="subtitle">每一份礼物都是我对你的爱与牵挂</p>
         
         <div class="cards-container">
-            <!-- 生日蛋糕卡片 -->
+            <!-- 生日蛋糕卡片 - 网格图案 -->
             <div class="gift-card" data-id="cake">
                 <img src="https://picsum.photos/seed/cake/400/600" alt="生日蛋糕" class="card-image">
-                <div class="scratch-overlay"></div>
+                <div class="scratch-overlay grid"></div>
                 <div class="scratch-area"></div>
             </div>
             
-            <!-- lululemon瑜伽裤卡片 -->
+            <!-- lululemon瑜伽裤卡片 - 粉色波点 -->
             <div class="gift-card" data-id="yoga">
                 <img src="https://picsum.photos/seed/yoga/400/600" alt="lululemon瑜伽裤" class="card-image">
-                <div class="scratch-overlay"></div>
+                <div class="scratch-overlay polka"></div>
                 <div class="scratch-area"></div>
             </div>
             
-            <!-- 防晒口罩卡片 -->
+            <!-- 防晒口罩卡片 - 彩虹渐变 -->
             <div class="gift-card" data-id="mask">
                 <img src="https://picsum.photos/seed/mask/400/600" alt="防晒口罩" class="card-image">
-                <div class="scratch-overlay"></div>
+                <div class="scratch-overlay rainbow"></div>
                 <div class="scratch-area"></div>
             </div>
             
-            <!-- 高跟鞋卡片 -->
+            <!-- 高跟鞋卡片 - 网格图案 -->
             <div class="gift-card" data-id="heels">
                 <img src="https://picsum.photos/seed/heels/400/600" alt="高跟鞋" class="card-image">
-                <div class="scratch-overlay"></div>
+                <div class="scratch-overlay grid"></div>
                 <div class="scratch-area"></div>
             </div>
             
-            <!-- 视频卡片 -->
+            <!-- 视频卡片 - 粉色波点 -->
             <div class="gift-card" data-id="video">
                 <img src="https://picsum.photos/seed/video/400/600" alt="视频" class="card-image">
-                <div class="scratch-overlay"></div>
+                <div class="scratch-overlay polka"></div>
                 <div class="scratch-area"></div>
             </div>
             
-            <!-- 爱情quiz卡片 -->
+            <!-- 爱情quiz卡片 - 彩虹渐变 -->
             <div class="gift-card" data-id="quiz">
                 <img src="https://picsum.photos/seed/quiz/400/600" alt="爱情quiz" class="card-image">
-                <div class="scratch-overlay"></div>
+                <div class="scratch-overlay rainbow"></div>
                 <div class="scratch-area"></div>
             </div>
         </div>
@@ -370,6 +430,13 @@
         // 刮刮乐效果
         document.querySelectorAll('.scratch-area').forEach(area => {
             let isScratching = false;
+            let scratchedArea = 0;
+            const overlay = area.parentElement.querySelector('.scratch-overlay');
+            const card = area.parentElement;
+            const rect = overlay.getBoundingClientRect();
+            const cardArea = rect.width * rect.height;
+            const requiredScratchPercentage = 1.0; // 需要刮开100%的面积
+            const requiredScratchArea = cardArea * requiredScratchPercentage;
             
             // 鼠标事件
             area.addEventListener('mousedown', function(e) {
@@ -405,7 +472,6 @@
             });
             
             function scratch(e) {
-                const overlay = area.parentElement.querySelector('.scratch-overlay');
                 const rect = overlay.getBoundingClientRect();
                 const x = e.clientX;
                 const y = e.clientY;
@@ -428,25 +494,35 @@
                 
                 overlay.appendChild(circle);
                 
-                // 检查是否刮开了大部分区域
-                checkScratchProgress(overlay);
+                // 计算刮开的面积（简化计算：每个刮开区域按圆形面积计算）
+                const scratchCircleArea = Math.PI * Math.pow(30, 2); // 半径30px的圆面积
+                scratchedArea += scratchCircleArea;
+                
+                // 检查是否刮开了足够的面积
+                checkScratchProgress();
+            }
+            
+            function checkScratchProgress() {
+                if (scratchedArea >= requiredScratchArea) {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        // 添加卡片放大效果
+                        card.classList.add('enlarged');
+                    }, 500);
+                }
             }
         });
-        
-        function checkScratchProgress(overlay) {
-            // 简单检测：如果刮开了一定数量的圆圈，就移除覆盖层
-            const circles = overlay.querySelectorAll('div');
-            if (circles.length > 20) {
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 500);
-            }
-        }
         
         // 卡片点击事件
         document.querySelectorAll('.gift-card').forEach(card => {
             card.addEventListener('click', function() {
+                const overlay = this.querySelector('.scratch-overlay');
+                // 只有当刮开覆盖层后才能点击进入详情
+                if (overlay && overlay.style.display !== 'none') {
+                    return; // 刮开覆盖层之前不允许点击
+                }
+                
                 const giftId = this.dataset.id;
                 if (giftId === 'video') {
                     // 视频需要密码
