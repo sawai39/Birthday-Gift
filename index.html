@@ -894,6 +894,7 @@
             // 鼠标事件
             area.addEventListener('mousedown', function(e) {
                 isScratching = true;
+                area.dataset.scratching = 'true';
                 scratch(e);
             });
 
@@ -905,24 +906,27 @@
 
             document.addEventListener('mouseup', function() {
                 isScratching = false;
+                setTimeout(() => { area.dataset.scratching = 'false'; }, 100);
             });
 
             // 触摸事件
             area.addEventListener('touchstart', function(e) {
                 isScratching = true;
+                area.dataset.scratching = 'true';
                 scratch(e.touches[0]);
                 e.preventDefault();
             });
 
-            document.addEventListener('touchmove', function(e) {
+            area.addEventListener('touchmove', function(e) {
                 if (isScratching) {
                     scratch(e.touches[0]);
                     e.preventDefault();
                 }
             });
 
-            document.addEventListener('touchend', function() {
+            area.addEventListener('touchend', function() {
                 isScratching = false;
+                setTimeout(() => { area.dataset.scratching = 'false'; }, 100);
             });
 
             function scratch(e) {
@@ -974,7 +978,14 @@
         
         // 卡片点击事件
         document.querySelectorAll('.gift-card').forEach(card => {
-            card.addEventListener('click', function() {
+            const area = card.querySelector('.scratch-area');
+
+            card.addEventListener('click', function(e) {
+                // 如果正在刮擦，不触发点击
+                if (area.dataset.scratching === 'true') {
+                    return;
+                }
+
                 const overlay = this.querySelector('.scratch-overlay');
                 // 只有当刮开覆盖层后才能点击进入详情
                 // 检查opacity是否为0（刮开后的状态）
