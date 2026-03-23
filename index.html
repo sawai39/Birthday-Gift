@@ -335,8 +335,14 @@
             transform: translateY(-5px);
         }
 
-        /* 特殊礼物卡片样式 */
+        /* 特殊礼物卡片样式 - 初始状态 */
         .gift-card.special-gift {
+            border: 2px solid #ddd;
+            transition: all 0.5s ease;
+        }
+
+        /* 刮开后的金色光晕效果 */
+        .gift-card.special-gift.scratched {
             border: 3px solid #ffd700;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
             animation: specialGlow 2s ease-in-out infinite;
@@ -356,13 +362,66 @@
             top: 5px;
             right: 5px;
             font-size: 20px;
-            animation: badgeBounce 1s ease-in-out infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
             z-index: 5;
+        }
+
+        .gift-card.special-gift.scratched .special-badge {
+            opacity: 1;
+            animation: badgeBounce 1s ease-in-out infinite;
         }
 
         @keyframes badgeBounce {
             0%, 100% { transform: scale(1) rotate(0deg); }
             50% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        /* 特殊礼物模态框效果 */
+        .gift-card.special-gift.modal-active {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            aspect-ratio: 1/1;
+            z-index: 2000;
+            animation: modalExpand 0.6s ease-out forwards;
+        }
+
+        @keyframes modalExpand {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 模态框遮罩层 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: block;
+            opacity: 1;
         }
         
         .card-image {
@@ -385,15 +444,11 @@
         }
         
         .card-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 70px;
+            line-height: 1;
         }
         
-        .card-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-        }
+
         
         /* 刮刮乐效果 */
         .scratch-overlay {
@@ -723,7 +778,6 @@
             <div class="gift-card" data-id="cake">
                 <div class="card-content">
                     <div class="card-icon">🎂</div>
-                    <div class="card-title">生日蛋糕</div>
                 </div>
                 <div class="scratch-overlay card1"></div>
                 <div class="scratch-area"></div>
@@ -733,7 +787,6 @@
             <div class="gift-card" data-id="heels">
                 <div class="card-content">
                     <div class="card-icon">👠</div>
-                    <div class="card-title">高跟鞋</div>
                 </div>
                 <div class="scratch-overlay card2"></div>
                 <div class="scratch-area"></div>
@@ -743,17 +796,15 @@
             <div class="gift-card" data-id="yoga">
                 <div class="card-content">
                     <div class="card-icon">🧘‍♀️</div>
-                    <div class="card-title">瑜伽服</div>
                 </div>
                 <div class="scratch-overlay card3"></div>
                 <div class="scratch-area"></div>
             </div>
 
-            <!-- 视频卡片 -->
+            <!-- 舞蹈视频卡片 -->
             <div class="gift-card" data-id="video">
                 <div class="card-content">
-                    <div class="card-icon">🎥</div>
-                    <div class="card-title">专属视频</div>
+                    <div class="card-icon">💃</div>
                 </div>
                 <div class="scratch-overlay card4"></div>
                 <div class="scratch-area"></div>
@@ -762,8 +813,7 @@
             <!-- 防晒口罩卡片 -->
             <div class="gift-card" data-id="mask">
                 <div class="card-content">
-                    <div class="card-icon">😷</div>
-                    <div class="card-title">防晒口罩</div>
+                    <div class="card-icon">🌞</div>
                 </div>
                 <div class="scratch-overlay card5"></div>
                 <div class="scratch-area"></div>
@@ -773,7 +823,6 @@
             <div class="gift-card special-gift" data-id="special">
                 <div class="card-content">
                     <div class="card-icon">🎁</div>
-                    <div class="card-title">神秘礼物</div>
                 </div>
                 <div class="scratch-overlay card6"></div>
                 <div class="scratch-area"></div>
@@ -781,7 +830,10 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- 特殊礼物模态框遮罩层 -->
+    <div class="modal-overlay" id="specialModalOverlay"></div>
+
     <!-- 详情页 -->
     <div class="detail-page" id="detailPage">
         <span class="close-btn" onclick="closeDetail()">&times;</span>
@@ -804,9 +856,9 @@
                 image: "https://picsum.photos/seed/cake/800/600"
             },
             yoga: {
-                title: "Lululemon瑜伽裤",
-                description: "知道你喜欢运动，特意为你挑选了这条Lululemon瑜伽裤。它不仅舒适透气，更能展现你优美的曲线。希望你在运动时能感受到我的陪伴。",
-                image: "https://picsum.photos/seed/yoga/800/600"
+                title: "瑜伽服",
+                description: "知道你喜欢运动，特意为你挑选了这套瑜伽服。它不仅舒适透气，更能展现你优美的曲线。希望你在运动时能感受到我的陪伴。",
+                image: "images/yoga/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=677578481529762707&skey=@crypt_e629852_9c547e47981c5c42c902bdc81ec6ca4d&mmweb_appid=wx_webfilehelper.jfif"
             },
             mask: {
                 title: "防晒口罩",
@@ -819,10 +871,10 @@
                 image: "https://picsum.photos/seed/heels/800/600"
             },
             video: {
-                title: "专属视频",
-                description: "这是我为你精心制作的视频，记录了我们在一起的美好时光。每一个画面都承载着我对你的爱，希望你能感受到我的用心。",
+                title: "专属舞蹈视频",
+                description: "这是我为你精心准备的舞蹈视频，每一个动作都承载着我对你的爱，希望你能感受到我的用心。",
                 isVideo: true,
-                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                videoUrl: "images/video/637875996.mp4"
             },
             special: {
                 title: "神秘特别礼物",
@@ -903,10 +955,16 @@
                     overlay.style.opacity = '0';
                     overlay.style.pointerEvents = 'none';
 
-                    // 添加放大效果
+                    // 检查是否是特殊礼物卡片
+                    if (card.classList.contains('special-gift')) {
+                        // 添加金色光晕效果
+                        card.classList.add('scratched');
+                    }
+
+                    // 所有卡片都添加放大效果
                     card.classList.add('enlarged');
 
-                    // 2秒后恢复原状
+                    // 2秒后移除放大效果
                     setTimeout(() => {
                         card.classList.remove('enlarged');
                     }, 2000);
@@ -919,17 +977,13 @@
             card.addEventListener('click', function() {
                 const overlay = this.querySelector('.scratch-overlay');
                 // 只有当刮开覆盖层后才能点击进入详情
-                if (overlay && overlay.style.display !== 'none') {
+                // 检查opacity是否为0（刮开后的状态）
+                if (overlay && overlay.style.opacity !== '0') {
                     return; // 刮开覆盖层之前不允许点击
                 }
-                
+
                 const giftId = this.dataset.id;
-                if (giftId === 'video') {
-                    // 视频需要密码
-                    showPasswordPrompt();
-                } else {
-                    showDetail(giftId);
-                }
+                showDetail(giftId);
             });
         });
         
@@ -943,7 +997,10 @@
                 content = `
                     <h2 class="detail-title">${gift.title}</h2>
                     <div class="video-container">
-                        <iframe src="${gift.videoUrl}" frameborder="0" allowfullscreen></iframe>
+                        <video controls autoplay style="width: 100%; border-radius: 10px;">
+                            <source src="${gift.videoUrl}" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
                     </div>
                     <p class="detail-description">${gift.description}</p>
                 `;
@@ -983,30 +1040,6 @@
         }
         
         // 显示密码提示
-        function showPasswordPrompt() {
-            const detailContent = document.getElementById('detailContent');
-            detailContent.innerHTML = `
-                <h2 class="detail-title">输入密码查看视频</h2>
-                <div class="password-container">
-                    <input type="password" class="password-input" id="passwordInput" placeholder="请输入密码">
-                    <br>
-                    <button class="password-btn" onclick="checkPassword()">确定</button>
-                    <p id="passwordError" style="color: red; margin-top: 10px;"></p>
-                </div>
-            `;
-            document.getElementById('detailPage').style.display = 'block';
-        }
-        
-        // 检查密码
-        function checkPassword() {
-            const password = document.getElementById('passwordInput').value;
-            if (password === '123456') {
-                showDetail('video');
-            } else {
-                document.getElementById('passwordError').textContent = '密码错误，请重试';
-            }
-        }
-
         // 爱心动画
         document.addEventListener('click', function(e) {
             createHeart(e.clientX, e.clientY);
