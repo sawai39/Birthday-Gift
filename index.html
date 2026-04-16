@@ -440,6 +440,11 @@
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.style.display = 'none';
+                    // 同时隐藏刮擦区域，确保点击事件能传递到卡片
+                    const scratchArea = overlay.parentElement.querySelector('.scratch-area');
+                    if (scratchArea) {
+                        scratchArea.style.display = 'none';
+                    }
                 }, 500);
             }
         }
