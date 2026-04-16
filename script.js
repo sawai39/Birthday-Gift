@@ -63,6 +63,10 @@ function generateCards() {
 function addScratchEffect(card, gift) {
     const scratchLayer = card.querySelector('.scratch-layer');
     let isScratching = false;
+    let scratchedArea = 0;
+    const cardArea = card.offsetWidth * card.offsetHeight;
+    const requiredScratchPercentage = 0.9; // 需要刮开90%的面积
+    const requiredScratchArea = cardArea * requiredScratchPercentage;
     
     scratchLayer.addEventListener('mousedown', startScratching);
     scratchLayer.addEventListener('touchstart', startScratching);
@@ -105,8 +109,12 @@ function addScratchEffect(card, gift) {
         
         scratchLayer.appendChild(scratchArea);
         
-        // 检查是否刮开了大部分
-        if (scratchLayer.children.length > 10) {
+        // 计算刮开的面积（简化计算：每个刮开区域按圆形面积计算）
+        const scratchCircleArea = Math.PI * Math.pow(25, 2); // 半径25px的圆面积
+        scratchedArea += scratchCircleArea;
+        
+        // 检查是否刮开了足够的面积
+        if (scratchedArea >= requiredScratchArea) {
             scratchLayer.style.opacity = '0';
             setTimeout(() => {
                 scratchLayer.style.display = 'none';

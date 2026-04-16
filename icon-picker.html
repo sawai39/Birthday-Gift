@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图标选择器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f9f5e9 0%, #e8f5e8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .category {
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffb6c1;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 15px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+            border: 2px solid transparent;
+        }
+
+        .icon-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #ffb6c1;
+        }
+
+        .icon-item.selected {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .icon-emoji {
+            font-size: 40px;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .icon-name {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
+        .selected-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .selected-info {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .selected-icon {
+            font-size: 50px;
+        }
+
+        .copy-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 图标选择器</h1>
+        <p class="subtitle">点击图标即可选择，然后复制使用</p>
+
+        <!-- 蛋糕甜点类 -->
+        <div class="category">
+            <h2 class="category-title">🎂 蛋糕甜点</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="🎂"><span class="icon-emoji">🎂</span><span class="icon-name">生日蛋糕</span></div>
+                <div class="icon-item" data-icon="🍰"><span class="icon-emoji">🍰</span><span class="icon-name">蛋糕切片</span></div>
+                <div class="icon-item" data-icon="🧁"><span class="icon-emoji">🧁</span><span class="icon-name">纸杯蛋糕</span></div>
+                <div class="icon-item" data-icon="🍮"><span class="icon-emoji">🍮</span><span class="icon-name">布丁</span></div>
+                <div class="icon-item" data-icon="🍩"><span class="icon-emoji">🍩</span><span class="icon-name">甜甜圈</span></div>
+                <div class="icon-item" data-icon="🍪"><span class="icon-emoji">🍪</span><span class="icon-name">饼干</span></div>
+                <div class="icon-item" data-icon="🍫"><span class="icon-emoji">🍫</span><span class="icon-name">巧克力</span></div>
+                <div class="icon-item" data-icon="🍬"><span class="icon-emoji">🍬</span><span class="icon-name">糖果</span></div>
+                <div class="icon-item" data-icon="🍭"><span class="icon-emoji">🍭</span><span class="icon-name">棒棒糖</span></div>
+                <div class="icon-item" data-icon="🧀"><span class="icon-emoji">🧀</span><span class="icon-name">奶酪</span></div>
+            </div>
+        </div>
+
+        <!-- 舞蹈运动类 -->
+        <div class="category">
+            <h2 class="category-title">💃 舞蹈运动</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="💃"><span class="icon-emoji">💃</span><span class="icon-name">拉丁舞</span></div>
+                <div class="icon-item" data-icon="🕺"><span class="icon-emoji">🕺</span><span class="icon-name">舞蹈</span></div>
+                <div class="icon-item" data-icon="🩰"><span class="icon-emoji">🩰</span><span class="icon-name">芭蕾舞</span></div>
+                <div class="icon-item" data-icon="🎭"><span class="icon-emoji">🎭</span><span class="icon-name">表演</span></div>
+                <div class="icon-item" data-icon="🎪"><span class="icon-emoji">🎪</span><span class="icon-name">马戏团</span></div>
+                <div class="icon-item" data-icon="🎨"><span class="icon-emoji">🎨</span><span class="icon-name">艺术</span></div>
+                <div class="icon-item" data-icon="🎬"><span class="icon-emoji">🎬</span><span class="icon-name">电影</span></div>
+                <div class="icon-item" data-icon="🎤"><span class="icon-emoji">🎤</span><span class="icon-name">唱歌</span></div>
+                <div class="icon-item" data-icon="🎧"><span class="icon-emoji">🎧</span><span class="icon-name">音乐</span></div>
+                <div class="icon-item" data-icon="🎹"><span class="icon-emoji">🎹</span><span class="icon-name">钢琴</span></div>
+            </div>
+        </div>
+
+        <!-- 鞋子时尚类 -->
+        <div class="category">
+            <h2 class="category-title">👠 鞋子时尚</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="👠"><span class="icon-emoji">👠</span><span class="icon-name">高跟鞋</span></div>
+                <div class="icon-item" data-icon="👡"><span class="icon-emoji">👡</span><span class="icon-name">凉鞋</span></div>
+                <div class="icon-item" data-icon="👢"><span class="icon-emoji">👢</span><span class="icon-name">靴子</span></div>
+                <div class="icon-item" data-icon="👟"><span class="icon-emoji">👟</span><span class="icon-name">运动鞋</span></div>
+                <div class="icon-item" data-icon="👞"><span class="icon-emoji">👞</span><span class="icon-name">皮鞋</span></div>
+                <div class="icon-item" data-icon="🥿"><span class="icon-emoji">🥿</span><span class="icon-name">平底鞋</span></div>
+                <div class="icon-item" data-icon="🩴"><span class="icon-emoji">🩴</span><span class="icon-name">人字拖</span></div>
+                <div class="icon-item" data-icon="👗"><span class="icon-emoji">👗</span><span class="icon-name">连衣裙</span></div>
+                <div class="icon-item" data-icon="👘"><span class="icon-emoji">👘</span><span class="icon-name">和服</span></div>
+                <div class="icon-item" data-icon="🥻"><span class="icon-emoji">🥻</span><span class="icon-name">纱丽</span></div>
+            </div>
+        </div>
+
+        <!-- 女孩与高跟鞋 -->
+        <div class="category">
+            <h2 class="category-title">💃 女孩与高跟鞋</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="💃"><span class="icon-emoji">💃</span><span class="icon-name">跳舞女</span></div>
+                <div class="icon-item" data-icon="🕺"><span class="icon-emoji">🕺</span><span class="icon-name">跳舞男</span></div>
+                <div class="icon-item" data-icon="👯‍♀️"><span class="icon-emoji">👯‍♀️</span><span class="icon-name">兔女郎</span></div>
+                <div class="icon-item" data-icon="🧍‍♀️"><span class="icon-emoji">🧍‍♀️</span><span class="icon-name">站立女</span></div>
+                <div class="icon-item" data-icon="🚶‍♀️"><span class="icon-emoji">🚶‍♀️</span><span class="icon-name">走路女</span></div>
+                <div class="icon-item" data-icon="🏃‍♀️"><span class="icon-emoji">🏃‍♀️</span><span class="icon-name">跑步女</span></div>
+                <div class="icon-item" data-icon="🧎‍♀️"><span class="icon-emoji">🧎‍♀️</span><span class="icon-name">跪坐女</span></div>
+                <div class="icon-item" data-icon="🧍"><span class="icon-emoji">🧍</span><span class="icon-name">站立人</span></div>
+                <div class="icon-item" data-icon="🚶"><span class="icon-emoji">🚶</span><span class="icon-name">走路人</span></div>
+                <div class="icon-item" data-icon="🏃"><span class="icon-emoji">🏃</span><span class="icon-name">跑步人</span></div>
+                <div class="icon-item" data-icon="👸"><span class="icon-emoji">👸</span><span class="icon-name">公主</span></div>
+                <div class="icon-item" data-icon="🤴"><span class="icon-emoji">🤴</span><span class="icon-name">王子</span></div>
+                <div class="icon-item" data-icon="👰‍♀️"><span class="icon-emoji">👰‍♀️</span><span class="icon-name">新娘</span></div>
+                <div class="icon-item" data-icon="🤵‍♂️"><span class="icon-emoji">🤵‍♂️</span><span class="icon-name">新郎</span></div>
+                <div class="icon-item" data-icon="👩‍🦰"><span class="icon-emoji">👩‍🦰</span><span class="icon-name">红发女</span></div>
+                <div class="icon-item" data-icon="👩"><span class="icon-emoji">👩</span><span class="icon-name">女人</span></div>
+                <div class="icon-item" data-icon="👱‍♀️"><span class="icon-emoji">👱‍♀️</span><span class="icon-name">金发女</span></div>
+                <div class="icon-item" data-icon="👩‍🦱"><span class="icon-emoji">👩‍🦱</span><span class="icon-name">卷发女</span></div>
+                <div class="icon-item" data-icon="👩‍🦳"><span class="icon-emoji">👩‍🦳</span><span class="icon-name">白发女</span></div>
+                <div class="icon-item" data-icon="👩‍🎤"><span class="icon-emoji">👩‍🎤</span><span class="icon-name">女歌手</span></div>
+            </div>
+        </div>
+
+        <!-- 瑜伽健身类 -->
+        <div class="category">
+            <h2 class="category-title">🧘 瑜伽健身</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="🧘‍♀️"><span class="icon-emoji">🧘‍♀️</span><span class="icon-name">瑜伽女</span></div>
+                <div class="icon-item" data-icon="🧘"><span class="icon-emoji">🧘</span><span class="icon-name">瑜伽</span></div>
+                <div class="icon-item" data-icon="🤸"><span class="icon-emoji">🤸</span><span class="icon-name">体操</span></div>
+                <div class="icon-item" data-icon="🏃‍♀️"><span class="icon-emoji">🏃‍♀️</span><span class="icon-name">跑步</span></div>
+                <div class="icon-item" data-icon="🚴‍♀️"><span class="icon-emoji">🚴‍♀️</span><span class="icon-name">骑行</span></div>
+                <div class="icon-item" data-icon="🏊‍♀️"><span class="icon-emoji">🏊‍♀️</span><span class="icon-name">游泳</span></div>
+                <div class="icon-item" data-icon="🤾"><span class="icon-emoji">🤾</span><span class="icon-name">手球</span></div>
+                <div class="icon-item" data-icon="🧗"><span class="icon-emoji">🧗</span><span class="icon-name">攀岩</span></div>
+                <div class="icon-item" data-icon="🤺"><span class="icon-emoji">🤺</span><span class="icon-name">击剑</span></div>
+                <div class="icon-item" data-icon="⛹️‍♀️"><span class="icon-emoji">⛹️‍♀️</span><span class="icon-name">篮球</span></div>
+            </div>
+        </div>
+
+        <!-- 防晒护肤类 -->
+        <div class="category">
+            <h2 class="category-title">🌞 防晒护肤</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="🌞"><span class="icon-emoji">🌞</span><span class="icon-name">太阳</span></div>
+                <div class="icon-item" data-icon="☀️"><span class="icon-emoji">☀️</span><span class="icon-name">阳光</span></div>
+                <div class="icon-item" data-icon="🌅"><span class="icon-emoji">🌅</span><span class="icon-name">日出</span></div>
+                <div class="icon-item" data-icon="🧴"><span class="icon-emoji">🧴</span><span class="icon-name">防晒霜</span></div>
+                <div class="icon-item" data-icon="💄"><span class="icon-emoji">💄</span><span class="icon-name">口红</span></div>
+                <div class="icon-item" data-icon="💅"><span class="icon-emoji">💅</span><span class="icon-name">美甲</span></div>
+                <div class="icon-item" data-icon="💆‍♀️"><span class="icon-emoji">💆‍♀️</span><span class="icon-name">按摩</span></div>
+                <div class="icon-item" data-icon="🧖‍♀️"><span class="icon-emoji">🧖‍♀️</span><span class="icon-name">桑拿</span></div>
+                <div class="icon-item" data-icon="🌺"><span class="icon-emoji">🌺</span><span class="icon-name">芙蓉</span></div>
+                <div class="icon-item" data-icon="🌸"><span class="icon-emoji">🌸</span><span class="icon-name">樱花</span></div>
+            </div>
+        </div>
+
+        <!-- 戴口罩与打伞 -->
+        <div class="category">
+            <h2 class="category-title">😷 防晒防护</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="😷"><span class="icon-emoji">😷</span><span class="icon-name">口罩脸</span></div>
+                <div class="icon-item" data-icon="🤒"><span class="icon-emoji">🤒</span><span class="icon-name">发烧</span></div>
+                <div class="icon-item" data-icon="🤕"><span class="icon-emoji">🤕</span><span class="icon-name">受伤</span></div>
+                <div class="icon-item" data-icon="🤢"><span class="icon-emoji">🤢</span><span class="icon-name">恶心</span></div>
+                <div class="icon-item" data-icon="🤧"><span class="icon-emoji">🤧</span><span class="icon-name">打喷嚏</span></div>
+                <div class="icon-item" data-icon="🥵"><span class="icon-emoji">🥵</span><span class="icon-name">热</span></div>
+                <div class="icon-item" data-icon="🥶"><span class="icon-emoji">🥶</span><span class="icon-name">冷</span></div>
+                <div class="icon-item" data-icon="☂️"><span class="icon-emoji">☂️</span><span class="icon-name">伞</span></div>
+                <div class="icon-item" data-icon="☔"><span class="icon-emoji">☔</span><span class="icon-name">雨伞</span></div>
+                <div class="icon-item" data-icon="🌂"><span class="icon-emoji">🌂</span><span class="icon-name">收起的伞</span></div>
+                <div class="icon-item" data-icon="🧕"><span class="icon-emoji">🧕</span><span class="icon-name">戴头巾女</span></div>
+                <div class="icon-item" data-icon="👳‍♀️"><span class="icon-emoji">👳‍♀️</span><span class="icon-name">戴头巾女</span></div>
+                <div class="icon-item" data-icon="🥷"><span class="icon-emoji">🥷</span><span class="icon-name">忍者</span></div>
+                <div class="icon-item" data-icon="👷‍♀️"><span class="icon-emoji">👷‍♀️</span><span class="icon-name">女工人</span></div>
+                <div class="icon-item" data-icon="👮‍♀️"><span class="icon-emoji">👮‍♀️</span><span class="icon-name">女警察</span></div>
+                <div class="icon-item" data-icon="👩‍⚕️"><span class="icon-emoji">👩‍⚕️</span><span class="icon-name">女医生</span></div>
+                <div class="icon-item" data-icon="👩‍🌾"><span class="icon-emoji">👩‍🌾</span><span class="icon-name">女农民</span></div>
+                <div class="icon-item" data-icon="👩‍🍳"><span class="icon-emoji">👩‍🍳</span><span class="icon-name">女厨师</span></div>
+                <div class="icon-item" data-icon="👩‍🎓"><span class="icon-emoji">👩‍🎓</span><span class="icon-name">女学生</span></div>
+                <div class="icon-item" data-icon="👩‍🏫"><span class="icon-emoji">👩‍🏫</span><span class="icon-name">女老师</span></div>
+            </div>
+        </div>
+
+        <!-- 礼物惊喜类 -->
+        <div class="category">
+            <h2 class="category-title">🎁 礼物惊喜</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="🎁"><span class="icon-emoji">🎁</span><span class="icon-name">礼物</span></div>
+                <div class="icon-item" data-icon="🎀"><span class="icon-emoji">🎀</span><span class="icon-name">蝴蝶结</span></div>
+                <div class="icon-item" data-icon="🎊"><span class="icon-emoji">🎊</span><span class="icon-name">彩球</span></div>
+                <div class="icon-item" data-icon="🎉"><span class="icon-emoji">🎉</span><span class="icon-name">派对</span></div>
+                <div class="icon-item" data-icon="✨"><span class="icon-emoji">✨</span><span class="icon-name">闪光</span></div>
+                <div class="icon-item" data-icon="🌟"><span class="icon-emoji">🌟</span><span class="icon-name">星星</span></div>
+                <div class="icon-item" data-icon="💎"><span class="icon-emoji">💎</span><span class="icon-name">钻石</span></div>
+                <div class="icon-item" data-icon="🎈"><span class="icon-emoji">🎈</span><span class="icon-name">气球</span></div>
+                <div class="icon-item" data-icon="💝"><span class="icon-emoji">💝</span><span class="icon-name">爱心盒</span></div>
+                <div class="icon-item" data-icon="🕯️"><span class="icon-emoji">🕯️</span><span class="icon-name">蜡烛</span></div>
+            </div>
+        </div>
+
+        <!-- 爱心浪漫类 -->
+        <div class="category">
+            <h2 class="category-title">❤️ 爱心浪漫</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="❤️"><span class="icon-emoji">❤️</span><span class="icon-name">红心</span></div>
+                <div class="icon-item" data-icon="💖"><span class="icon-emoji">💖</span><span class="icon-name">闪光心</span></div>
+                <div class="icon-item" data-icon="💗"><span class="icon-emoji">💗</span><span class="icon-name">跳动心</span></div>
+                <div class="icon-item" data-icon="💓"><span class="icon-emoji">💓</span><span class="icon-name">心跳</span></div>
+                <div class="icon-item" data-icon="💕"><span class="icon-emoji">💕</span><span class="icon-name">双心</span></div>
+                <div class="icon-item" data-icon="💞"><span class="icon-emoji">💞</span><span class="icon-name">旋转心</span></div>
+                <div class="icon-item" data-icon="💘"><span class="icon-emoji">💘</span><span class="icon-name">丘比特</span></div>
+                <div class="icon-item" data-icon="💝"><span class="icon-emoji">💝</span><span class="icon-name">礼物心</span></div>
+                <div class="icon-item" data-icon="🌹"><span class="icon-emoji">🌹</span><span class="icon-name">玫瑰</span></div>
+                <div class="icon-item" data-icon="🌷"><span class="icon-emoji">🌷</span><span class="icon-name">郁金香</span></div>
+            </div>
+        </div>
+
+        <!-- 动物可爱类 -->
+        <div class="category">
+            <h2 class="category-title">🐾 动物可爱</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="🐶"><span class="icon-emoji">🐶</span><span class="icon-name">狗</span></div>
+                <div class="icon-item" data-icon="🐱"><span class="icon-emoji">🐱</span><span class="icon-name">猫</span></div>
+                <div class="icon-item" data-icon="🐰"><span class="icon-emoji">🐰</span><span class="icon-name">兔子</span></div>
+                <div class="icon-item" data-icon="🦊"><span class="icon-emoji">🦊</span><span class="icon-name">狐狸</span></div>
+                <div class="icon-item" data-icon="🐻"><span class="icon-emoji">🐻</span><span class="icon-name">熊</span></div>
+                <div class="icon-item" data-icon="🐼"><span class="icon-emoji">🐼</span><span class="icon-name">熊猫</span></div>
+                <div class="icon-item" data-icon="🐨"><span class="icon-emoji">🐨</span><span class="icon-name">考拉</span></div>
+                <div class="icon-item" data-icon="🦁"><span class="icon-emoji">🦁</span><span class="icon-name">狮子</span></div>
+                <div class="icon-item" data-icon="🦄"><span class="icon-emoji">🦄</span><span class="icon-name">独角兽</span></div>
+                <div class="icon-item" data-icon="🦋"><span class="icon-emoji">🦋</span><span class="icon-name">蝴蝶</span></div>
+            </div>
+        </div>
+
+        <!-- 美食饮品类 -->
+        <div class="category">
+            <h2 class="category-title">🍽️ 美食饮品</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="🍕"><span class="icon-emoji">🍕</span><span class="icon-name">披萨</span></div>
+                <div class="icon-item" data-icon="🍔"><span class="icon-emoji">🍔</span><span class="icon-name">汉堡</span></div>
+                <div class="icon-item" data-icon="🍟"><span class="icon-emoji">🍟</span><span class="icon-name">薯条</span></div>
+                <div class="icon-item" data-icon="🌮"><span class="icon-emoji">🌮</span><span class="icon-name"> tacos</span></div>
+                <div class="icon-item" data-icon="🍣"><span class="icon-emoji">🍣</span><span class="icon-name">寿司</span></div>
+                <div class="icon-item" data-icon="🍜"><span class="icon-emoji">🍜</span><span class="icon-name">拉面</span></div>
+                <div class="icon-item" data-icon="🍷"><span class="icon-emoji">🍷</span><span class="icon-name">红酒</span></div>
+                <div class="icon-item" data-icon="🍸"><span class="icon-emoji">🍸</span><span class="icon-name">鸡尾酒</span></div>
+                <div class="icon-item" data-icon="☕"><span class="icon-emoji">☕</span><span class="icon-name">咖啡</span></div>
+                <div class="icon-item" data-icon="🍵"><span class="icon-emoji">🍵</span><span class="icon-name">茶</span></div>
+            </div>
+        </div>
+
+        <!-- 旅行度假类 -->
+        <div class="category">
+            <h2 class="category-title">✈️ 旅行度假</h2>
+            <div class="icon-grid">
+                <div class="icon-item" data-icon="✈️"><span class="icon-emoji">✈️</span><span class="icon-name">飞机</span></div>
+                <div class="icon-item" data-icon="🚗"><span class="icon-emoji">🚗</span><span class="icon-name">汽车</span></div>
+                <div class="icon-item" data-icon="🚢"><span class="icon-emoji">🚢</span><span class="icon-name">轮船</span></div>
+                <div class="icon-item" data-icon="🏖️"><span class="icon-emoji">🏖️</span><span class="icon-name">海滩</span></div>
+                <div class="icon-item" data-icon="🏝️"><span class="icon-emoji">🏝️</span><span class="icon-name">岛屿</span></div>
+                <div class="icon-item" data-icon="🗼"><span class="icon-emoji">🗼</span><span class="icon-name">东京塔</span></div>
+                <div class="icon-item" data-icon="🗽"><span class="icon-emoji">🗽</span><span class="icon-name">自由女神</span></div>
+                <div class="icon-item" data-icon="🎡"><span class="icon-emoji">🎡</span><span class="icon-name">摩天轮</span></div>
+                <div class="icon-item" data-icon="🎢"><span class="icon-emoji">🎢</span><span class="icon-name">过山车</span></div>
+                <div class="icon-item" data-icon="🏰"><span class="icon-emoji">🏰</span><span class="icon-name">城堡</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部选中面板 -->
+    <div class="selected-panel">
+        <span class="selected-info">选中图标：</span>
+        <span class="selected-icon" id="selectedIcon">🎁</span>
+        <button class="copy-btn" id="copyBtn">复制图标</button>
+    </div>
+
+    <script>
+        let currentIcon = '🎁';
+
+        // 图标点击事件
+        document.querySelectorAll('.icon-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除其他选中状态
+                document.querySelectorAll('.icon-item').forEach(i => i.classList.remove('selected'));
+
+                // 添加当前选中状态
+                this.classList.add('selected');
+
+                // 更新当前图标
+                currentIcon = this.dataset.icon;
+                document.getElementById('selectedIcon').textContent = currentIcon;
+            });
+        });
+
+        // 复制按钮
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            navigator.clipboard.writeText(currentIcon).then(() => {
+                this.textContent = '已复制!';
+                this.classList.add('copied');
+
+                setTimeout(() => {
+                    this.textContent = '复制图标';
+                    this.classList.remove('copied');
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

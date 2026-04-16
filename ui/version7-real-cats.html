@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>生日快乐，我的宝贝 - 真实猫咪主题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 主页面样式 */
+        .main-container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ff6b6b;
+            margin: 30px 0;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        /* 卡片容器 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        /* 卡片样式 */
+        .gift-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background-color: #fff;
+            border: 2px solid #a8edea;
+        }
+        
+        .gift-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* 卡片内容 */
+        .card-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* 刮刮乐效果 */
+        .scratch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+            background-size: cover;
+            background-position: center;
+            background-color: #fff;
+        }
+        
+        /* 真实猫咪覆盖层 */
+        .scratch-overlay.persian {
+            background-image: url('images/persian.jpg');
+        }
+        
+        .scratch-overlay.bengal {
+            background-image: url('images/bengal.jpg');
+        }
+        
+        .scratch-overlay.siamese {
+            background-image: url('images/siamese.jpg');
+        }
+        
+        .scratch-overlay.maine-coon {
+            background-image: url('images/maine-coon.jpg');
+        }
+        
+        .scratch-overlay.british-shorthair {
+            background-image: url('images/british-shorthair.jpg');
+        }
+        
+        .scratch-overlay.sphynx {
+            background-image: url('images/sphynx.jpg');
+        }
+        
+        .scratch-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            cursor: pointer;
+        }
+        
+        /* 卡片放大效果 */
+        .gift-card.enlarged {
+            transform: scale(1.1);
+            z-index: 100;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 430px) {
+            .main-container {
+                max-width: 100%;
+                padding: 10px;
+            }
+            
+            .cards-container {
+                gap: 10px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主页面 -->
+    <div class="main-container">
+        <h1>生日快乐，我的宝贝</h1>
+        <p class="subtitle">每一份礼物都是我对你的爱与牵挂</p>
+        
+        <div class="cards-container">
+            <!-- 生日蛋糕卡片 -->
+            <div class="gift-card" data-id="cake">
+                <div class="card-content">
+                    <div class="card-icon">🎂</div>
+                    <div class="card-title">生日蛋糕</div>
+                </div>
+                <div class="scratch-overlay persian"></div>
+                <div class="scratch-area"></div>
+            </div>
+            
+            <!-- 高跟鞋卡片 -->
+            <div class="gift-card" data-id="heels">
+                <div class="card-content">
+                    <div class="card-icon">👠</div>
+                    <div class="card-title">高跟鞋</div>
+                </div>
+                <div class="scratch-overlay bengal"></div>
+                <div class="scratch-area"></div>
+            </div>
+            
+            <!-- 瑜伽服卡片 -->
+            <div class="gift-card" data-id="yoga">
+                <div class="card-content">
+                    <div class="card-icon">🧘‍♀️</div>
+                    <div class="card-title">瑜伽服</div>
+                </div>
+                <div class="scratch-overlay siamese"></div>
+                <div class="scratch-area"></div>
+            </div>
+            
+            <!-- 视频卡片 -->
+            <div class="gift-card" data-id="video">
+                <div class="card-content">
+                    <div class="card-icon">🎥</div>
+                    <div class="card-title">专属视频</div>
+                </div>
+                <div class="scratch-overlay maine-coon"></div>
+                <div class="scratch-area"></div>
+            </div>
+            
+            <!-- 防晒口罩卡片 -->
+            <div class="gift-card" data-id="mask">
+                <div class="card-content">
+                    <div class="card-icon">😷</div>
+                    <div class="card-title">防晒口罩</div>
+                </div>
+                <div class="scratch-overlay british-shorthair"></div>
+                <div class="scratch-area"></div>
+            </div>
+            
+            <!-- 其他礼物卡片 -->
+            <div class="gift-card" data-id="other">
+                <div class="card-content">
+                    <div class="card-icon">🎁</div>
+                    <div class="card-title">其他礼物</div>
+                </div>
+                <div class="scratch-overlay sphynx"></div>
+                <div class="scratch-area"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 刮刮乐功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const scratchAreas = document.querySelectorAll('.scratch-area');
+            
+            scratchAreas.forEach(area => {
+                const card = area.closest('.gift-card');
+                const overlay = card.querySelector('.scratch-overlay');
+                let isScratching = false;
+                let scratchProgress = 0;
+                
+                // 鼠标事件
+                area.addEventListener('mousedown', function(e) {
+                    isScratching = true;
+                    scratch(e);
+                });
+                
+                document.addEventListener('mousemove', function(e) {
+                    if (isScratching) {
+                        scratch(e);
+                    }
+                });
+                
+                document.addEventListener('mouseup', function() {
+                    isScratching = false;
+                });
+                
+                // 触摸事件
+                area.addEventListener('touchstart', function(e) {
+                    isScratching = true;
+                    scratch(e.touches[0]);
+                    e.preventDefault(); // 防止页面滚动
+                });
+                
+                document.addEventListener('touchmove', function(e) {
+                    if (isScratching) {
+                        scratch(e.touches[0]);
+                        e.preventDefault(); // 防止页面滚动
+                    }
+                });
+                
+                document.addEventListener('touchend', function() {
+                    isScratching = false;
+                });
+                
+                function scratch(e) {
+                    const rect = area.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // 创建刮开效果
+                    const scratchCircle = document.createElement('div');
+                    scratchCircle.style.position = 'absolute';
+                    scratchCircle.style.width = '40px';
+                    scratchCircle.style.height = '40px';
+                    scratchCircle.style.borderRadius = '50%';
+                    scratchCircle.style.background = 'transparent';
+                    scratchCircle.style.left = (x - 20) + 'px';
+                    scratchCircle.style.top = (y - 20) + 'px';
+                    scratchCircle.style.pointerEvents = 'none';
+                    scratchCircle.style.boxShadow = 'inset 0 0 20px rgba(0, 0, 0, 0.8)';
+                    
+                    overlay.appendChild(scratchCircle);
+                    
+                    // 计算刮开进度
+                    scratchProgress += 0.5;
+                    if (scratchProgress >= 100) {
+                        // 刮开完成，显示卡片内容
+                        overlay.style.opacity = '0';
+                        
+                        // 添加放大效果
+                        card.classList.add('enlarged');
+                        
+                        // 3秒后恢复原状
+                        setTimeout(() => {
+                            card.classList.remove('enlarged');
+                        }, 3000);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
