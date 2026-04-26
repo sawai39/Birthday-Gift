@@ -856,9 +856,12 @@
                 image: "https://picsum.photos/seed/cake/800/600"
             },
             yoga: {
-                title: "瑜伽服",
-                description: "知道你喜欢运动，特意为你挑选了这套瑜伽服。它不仅舒适透气，更能展现你优美的曲线。希望你在运动时能感受到我的陪伴。",
-                image: "images/yoga/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=677578481529762707&skey=@crypt_e629852_9c547e47981c5c42c902bdc81ec6ca4d&mmweb_appid=wx_webfilehelper.jfif"
+                title: "Lululemon瑜伽服",
+                description: "知道你喜欢运动，特意为你挑选了这套Lululemon瑜伽服。包括Swiftly Tech和Wunder Train系列，它们不仅舒适透气，更能展现你优美的曲线。希望你在运动时能感受到我的陪伴。",
+                images: [
+                    "images/yoga/swiftly tech.png",
+                    "images/yoga/wunder train.png"
+                ]
             },
             mask: {
                 title: "防晒口罩",
@@ -868,7 +871,7 @@
             heels: {
                 title: "优雅高跟鞋",
                 description: "这双高跟鞋能让你更加优雅动人，就像你在我心中的样子。每一步都踩在我的心上，愿你穿着它走向更加美好的未来。",
-                image: "https://picsum.photos/seed/heels/800/600"
+                image: "images/shoes/cloud x4.jpg"
             },
             video: {
                 title: "专属舞蹈视频",
@@ -879,7 +882,7 @@
             special: {
                 title: "神秘特别礼物",
                 description: "这是一份独一无二的惊喜！它代表着我们之间的特殊纽带，是我为你精心挑选的最特别的礼物。",
-                image: "images/Card Cover/949624132555505673~tplv-be4g95zd3a-image.jpeg",
+                image: "images/special gift/手指糯米棒.png",
                 isSpecial: true
             }
         };
@@ -1023,6 +1026,7 @@
                     <div class="special-gift-container" style="text-align: center; padding: 20px;">
                         <div style="font-size: 80px; margin: 20px 0; animation: giftPulse 1.5s ease-in-out infinite;">🎁</div>
                         <p class="detail-description" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">${gift.description}</p>
+                        <img src="${gift.image}" alt="${gift.title}" class="detail-image">
                         <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #fff5f5, #fff0f5); border-radius: 15px; border: 2px dashed #ffb6c1;">
                             <p style="font-size: 16px; color: #666;">💝 请查看你的实体礼物包裹</p>
                             <p style="font-size: 14px; color: #999; margin-top: 10px;">这份数字卡片只是预告，真正的惊喜正在等待你！</p>
@@ -1034,6 +1038,17 @@
                             50% { transform: scale(1.1); }
                         }
                     </style>
+                `;
+            } else if (gift.images && gift.images.length > 0) {
+                // 处理多张图片的情况
+                let imageContent = '';
+                gift.images.forEach(imgSrc => {
+                    imageContent += `<img src="${imgSrc}" alt="${gift.title}" class="detail-image">`;
+                });
+                content = `
+                    <h2 class="detail-title">${gift.title}</h2>
+                    ${imageContent}
+                    <p class="detail-description">${gift.description}</p>
                 `;
             } else {
                 content = `
