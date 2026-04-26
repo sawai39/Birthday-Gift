@@ -864,13 +864,13 @@
                 ]
             },
             mask: {
-                title: "防晒口罩",
-                description: "夏天快到了，为你准备了这款防晒口罩，保护你娇嫩的肌肤免受紫外线伤害。就像我一直想保护你一样，让你在阳光下也能自信美丽。",
-                image: "https://picsum.photos/seed/mask/800/600"
+                title: "UV防晒口罩",
+                description: "夏天快到了，为你准备了这款UV防晒口罩，保护你娇嫩的肌肤免受紫外线伤害。就像我一直想保护你一样，让你在阳光下也能自信美丽。",
+                image: "images/UV protection mask/mask.jpg"
             },
             heels: {
-                title: "优雅高跟鞋",
-                description: "这双高跟鞋能让你更加优雅动人，就像你在我心中的样子。每一步都踩在我的心上，愿你穿着它走向更加美好的未来。",
+                title: "昂跑 Cloud X4 综训鞋",
+                description: "本来是想选择高跟鞋，但最终选择了这双为运动而生的训练鞋。昂跑Cloud X4，就像我们的爱情一样轻盈又稳固。愿你在每一次奔跑中，都能感受到我为你加油的心。",
                 image: "images/shoes/cloud x4.jpg"
             },
             video: {
@@ -880,8 +880,8 @@
                 videoUrl: "images/video/637875996.mp4"
             },
             special: {
-                title: "神秘特别礼物",
-                description: "这是一份独一无二的惊喜！它代表着我们之间的特殊纽带，是我为你精心挑选的最特别的礼物。",
+                title: "甜蜜手指糯米",
+                description: "🎂 生日糯米蛋糕来了！软糯香甜的手指糯米棒，每一口都是幸福的味道。就像你在我生活中的每一个小确幸，简单却让人心动。愿它能为你的生日增添一份甜蜜的惊喜！🎉",
                 image: "images/special gift/手指糯米棒.png",
                 isSpecial: true
             }
@@ -1023,21 +1023,8 @@
             } else if (gift.isSpecial) {
                 content = `
                     <h2 class="detail-title">${gift.title}</h2>
-                    <div class="special-gift-container" style="text-align: center; padding: 20px;">
-                        <div style="font-size: 80px; margin: 20px 0; animation: giftPulse 1.5s ease-in-out infinite;">🎁</div>
-                        <p class="detail-description" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">${gift.description}</p>
-                        <img src="${gift.image}" alt="${gift.title}" class="detail-image">
-                        <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #fff5f5, #fff0f5); border-radius: 15px; border: 2px dashed #ffb6c1;">
-                            <p style="font-size: 16px; color: #666;">💝 请查看你的实体礼物包裹</p>
-                            <p style="font-size: 14px; color: #999; margin-top: 10px;">这份数字卡片只是预告，真正的惊喜正在等待你！</p>
-                        </div>
-                    </div>
-                    <style>
-                        @keyframes giftPulse {
-                            0%, 100% { transform: scale(1); }
-                            50% { transform: scale(1.1); }
-                        }
-                    </style>
+                    <img src="${gift.image}" alt="${gift.title}" class="detail-image" style="border-radius: 15px; margin-bottom: 20px;">
+                    <p class="detail-description">${gift.description}</p>
                 `;
             } else if (gift.images && gift.images.length > 0) {
                 // 处理多张图片的情况
