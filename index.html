@@ -844,7 +844,10 @@
     
     <!-- 背景音乐 -->
     <audio id="bgMusic" loop autoplay>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://music.163.com/song/media/outer/url?id=186001.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic2" loop autoplay>
+        <source src="https://music.163.com/song/media/outer/url?id=18614502.mp3" type="audio/mpeg">
     </audio>
     
     <script>
@@ -853,7 +856,7 @@
             cake: {
                 title: "甜蜜生日蛋糕",
                 description: "为你定制的专属生日蛋糕，希望它能像我们的爱情一样甜蜜。每一口都充满我的心意，愿你的每一天都如蛋糕般美好。",
-                image: "https://picsum.photos/seed/cake/800/600"
+                image: "images/cake/0fc52cd3bc5ba767a56497c40c7ea8f5.jpg"
             },
             yoga: {
                 title: "Lululemon瑜伽服",
@@ -870,7 +873,7 @@
             },
             heels: {
                 title: "昂跑 Cloud X4 综训鞋",
-                description: "本来是想选择高跟鞋，但最终选择了这双为运动而生的训练鞋。昂跑Cloud X4，就像我们的爱情一样轻盈又稳固。愿你在每一次奔跑中，都能感受到我为你加油的心。",
+                description: "本来是想选择高跟鞋，但最终选择了这双为健身房而生的训练鞋。昂跑Cloud X4，就像我们的爱情一样轻盈又稳固。愿你在每一次撸铁中，都能感受到我为你加油的心。",
                 image: "images/shoes/cloud x4.jpg"
             },
             video: {
@@ -881,7 +884,7 @@
             },
             special: {
                 title: "甜蜜手指糯米",
-                description: "🎂 生日糯米蛋糕来了！软糯香甜的手指糯米棒，每一口都是幸福的味道。就像你在我生活中的每一个小确幸，简单却让人心动。愿它能为你的生日增添一份甜蜜的惊喜！🎉",
+                description: "想把你抱进身体里面",
                 image: "images/special gift/手指糯米棒.png",
                 isSpecial: true
             }
@@ -1094,18 +1097,27 @@
         // 自动播放音乐
         window.addEventListener('load', function() {
             const music = document.getElementById('bgMusic');
+            const music2 = document.getElementById('bgMusic2');
             music.volume = 0.3;
+            music2.volume = 0.3;
             // 尝试播放音乐
             music.play().catch(e => {
                 console.log('需要用户交互才能播放音乐');
+            });
+            music2.play().catch(e => {
+                console.log('需要用户交互才能播放音乐2');
             });
         });
         
         // 点击页面时播放音乐
         document.addEventListener('click', function() {
             const music = document.getElementById('bgMusic');
+            const music2 = document.getElementById('bgMusic2');
             if (music.paused) {
                 music.play();
+            }
+            if (music2.paused) {
+                music2.play();
             }
         });
     </script>
